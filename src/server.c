@@ -226,6 +226,9 @@ server_init(struct server *server)
 		event_loop, SIGTERM, handle_sigterm, server->wl_display);
 	server->wl_event_loop = event_loop;
 
+	/* If xwayland or another wayland socket sends SIGPIPE, don't crash. */
+	signal(SIGPIPE, SIG_IGN);
+
 	/*
 	 * The backend is a feature which abstracts the underlying input and
 	 * output hardware. The autocreate option will choose the most suitable
